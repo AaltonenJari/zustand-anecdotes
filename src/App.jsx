@@ -3,7 +3,7 @@ import { useAnecdotes, useAnecdoteActions} from './store'
 
 const App = () => {
   const anecdotes = useAnecdotes()
-  const { vote } = useAnecdoteActions()
+  const { vote, create } = useAnecdoteActions()
 
   return (
     <div>
@@ -22,7 +22,9 @@ const App = () => {
         <div>
           <input />
         </div>
-        <button>create</button>
+        <button type="button" onClick={() => create(document.querySelector('input').value)}>
+          create
+        </button>
       </form>
     </div>
   )
