@@ -29,6 +29,20 @@ const useAnecdoteStore = create((set, get) => ({
   },
 }))
 
+const useNotificationStore = create((set) => ({
+  notification: null,
+  setNotification: (message, timeout) => {
+    set(() => ({ notification: message }))
+    if (timeout) {
+      setTimeout(() => {
+        set(() => ({ notification: null }))
+      }, timeout * 1000)
+    }
+  }
+}))
+
+export const useNotification = () => useNotificationStore((state) => state.notification)
+export const useSetNotification = () => useNotificationStore((state) => state.setNotification)
 export const useAnecdotes = () => useAnecdoteStore((state) => state.anecdotes)
 export const useFilter = () => useAnecdoteStore((state) => state.filter)
 export const useAnecdoteActions = () => useAnecdoteStore((state) => state.actions)
