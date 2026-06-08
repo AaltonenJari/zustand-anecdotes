@@ -47,4 +47,22 @@ describe('useAnecdoteActions', () => {
     expect(anecdotesResult.current).toContainEqual(newAnecdote)
   })
   
+  it('filter ensures that the correct React component receives the correctly filtered list of anecdotes', async () => {
+    const mockAnecdotes = [
+      { id: 1, content: 'First anecdote', votes: 0 },
+      { id: 2, content: 'Second anecdote', votes: 0 }
+    ]
+    useAnecdoteStore.setState({ anecdotes: mockAnecdotes })
+    
+    const { result } = renderHook(() => useAnecdoteActions())
+    act(() => {
+      result.current.setFilter('Second')
+    })
+    
+    const { result: anecdotesResult } = renderHook(() => useAnecdotes())
+    expect(anecdotesResult.current).toEqual([
+      { id: 2, content: 'Second anecdote', votes: 0 }
+    ])
+  })  
+
 })

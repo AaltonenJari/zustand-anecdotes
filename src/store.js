@@ -1,6 +1,7 @@
 
 import { create } from 'zustand'
 import anecdoteService from './services/anecdotes'
+import { useShallow } from 'zustand/shallow'
 
 const useAnecdoteStore = create((set, get) => ({
   anecdotes: [],
@@ -47,9 +48,21 @@ const useNotificationStore = create((set) => ({
   }
 }))
 
+export const useAnecdotes = () =>
+  useAnecdoteStore(
+    useShallow((state) => {
+      const filter = state.filter.trim().toLowerCase()
+
+      if (!filter) return state.anecdotes
+
+      return state.anecdotes.filter((a) =>
+        a.content.toLowerCase().includes(filter)
+      )
+    })
+  )
+
 export const useNotification = () => useNotificationStore((state) => state.notification)
 export const useSetNotification = () => useNotificationStore((state) => state.setNotification)
-export const useAnecdotes = () => useAnecdoteStore((state) => state.anecdotes)
 export const useFilter = () => useAnecdoteStore((state) => state.filter)
 export const useAnecdoteActions = () => useAnecdoteStore((state) => state.actions)
 

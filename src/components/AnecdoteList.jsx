@@ -1,18 +1,13 @@
-import { useAnecdotes, useFilter, useAnecdoteActions } from '../store'
+import { useAnecdotes, useAnecdoteActions } from '../store'
 import { useSetNotification } from '../store'
 
 const AnecdoteList = () => {
     const anecdotes = useAnecdotes()
-    const filter = useFilter()
     const { vote } = useAnecdoteActions()
     const setNotification = useSetNotification()
     const { remove } = useAnecdoteActions()
     
-    const sortefAnecdotes = anecdotes.toSorted((a, b) => b.votes - a.votes)
-
-    const filteredAnecdotes = sortefAnecdotes.filter((a) => 
-      a.content.toLowerCase().includes(filter.toLowerCase())
-    )
+    const sortedAnecdotes = anecdotes.toSorted((a, b) => b.votes - a.votes)
 
     const handleVote = (id) => {
       vote(id)
@@ -28,7 +23,7 @@ const AnecdoteList = () => {
 
     return (
       <div>
-        {filteredAnecdotes.map(anecdote => (
+        {sortedAnecdotes.map(anecdote => (
           <div key={anecdote.id}>
             <div>{anecdote.content}</div>
             <div>
