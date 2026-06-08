@@ -32,5 +32,19 @@ describe('useAnecdoteActions', () => {
     const { result: anecdotesResult } = renderHook(() => useAnecdotes())
     expect(anecdotesResult.current).toEqual(mockAnecdotes)
   })
+
+  it('add creates a new anecdote', async () => {
+    const newAnecdote = { id: 2, content: 'New anecdote', votes: 0 }
+    anecdoteService.createNew.mockResolvedValue(newAnecdote)
+
+    const { result } = renderHook(() => useAnecdoteActions())
+
+    await act(async () => {
+      await result.current.create('New anecdote')
+    })
+
+    const { result: anecdotesResult } = renderHook(() => useAnecdotes())
+    expect(anecdotesResult.current).toContainEqual(newAnecdote)
+  })
   
 })
